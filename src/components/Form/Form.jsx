@@ -9,6 +9,7 @@ export function Form() {
   const [state, handleSubmit] = useForm("myyvnykd");
 
   const [validEmail, setValidEmail] = useState(false);
+  const [validPhoneNumber, setValidPhoneNumber] = useState(false);
   const [isHuman, setIsHuman] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -17,6 +18,14 @@ export function Form() {
       setValidEmail(true);
     } else {
       setValidEmail(false);
+    }
+  }
+
+  function verifyPhoneNumber(number) {
+    if (validator.isMobilePhone(number, "any")) { // You can specify the locale if needed
+      setValidPhoneNumber(true);
+    } else {
+      setValidPhoneNumber(false);
     }
   }
 
@@ -60,8 +69,20 @@ export function Form() {
           }}
           required
         />
-
         <ValidationError prefix="Email" field="email" errors={state.errors} />
+
+        <input
+          placeholder="Mobile Number"
+          id="phone"
+          type="tel"
+          name="phone"
+          onChange={(e) => {
+            verifyPhoneNumber(e.target.value);
+          }}
+          required
+        />
+        <ValidationError prefix="Phone" field="phone" errors={state.errors} />
+
         <textarea
           required
           placeholder="Leave your message"
@@ -77,7 +98,10 @@ export function Form() {
           errors={state.errors}
         />
 
-        <button type="submit" disabled={state.submitting}>
+        <button
+          type="submit"
+          disabled={state.submitting || !validEmail || !validPhoneNumber}
+        >
           Submit
         </button>
       </form>
