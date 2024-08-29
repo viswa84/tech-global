@@ -1,73 +1,60 @@
+import React, { useEffect, useState } from "react";
 import { useForm, ValidationError } from "@formspree/react";
 import { toast, Toaster } from "sonner";
-
-import { useEffect, useState } from "react";
 import validator from "validator";
-import { Container, ContainerSucces } from "./styles";
 
 export function Form() {
   const [state, handleSubmit] = useForm("myyvnykd");
 
   const [validEmail, setValidEmail] = useState(false);
   const [validPhoneNumber, setValidPhoneNumber] = useState(false);
-  const [isHuman, setIsHuman] = useState(false);
   const [message, setMessage] = useState("");
 
   function verifyEmail(email) {
-    if (validator.isEmail(email)) {
-      setValidEmail(true);
-    } else {
-      setValidEmail(false);
-    }
+    setValidEmail(validator.isEmail(email));
   }
 
   function verifyPhoneNumber(number) {
-    if (validator.isMobilePhone(number, "any")) { // You can specify the locale if needed
-      setValidPhoneNumber(true);
-    } else {
-      setValidPhoneNumber(false);
-    }
+    setValidPhoneNumber(validator.isMobilePhone(number, "any"));
   }
 
   useEffect(() => {
     if (state.succeeded) {
-      toast.success("Email successfully sent!"); // Sonner's toast notification
+      toast.success("Email successfully sent!");
     }
   }, [state.succeeded]);
 
   if (state.succeeded) {
     return (
-      <ContainerSucces>
-        <h3>Thanks for getting in touch!</h3>
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg text-center">
+        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          Thanks for getting in touch!
+        </h3>
         <button
-          onClick={() => {
-            try {
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            } catch (error) {
-              console.error("Error scrolling to top:", error);
-            }
-          }}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80"
         >
           Back to the top
         </button>
-        <Toaster position="bottom-left" /> {/* Adding the Toaster component */}
-      </ContainerSucces>
+        <Toaster position="bottom-left" />
+      </div>
     );
   }
 
   return (
-    <Container>
-      <h2>Get in touch using the form</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+        Get in touch using the form
+      </h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           placeholder="Email"
           id="email"
           type="email"
           name="email"
-          onChange={(e) => {
-            verifyEmail(e.target.value);
-          }}
+          onChange={(e) => verifyEmail(e.target.value)}
           required
+          className="p-3 border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-900 dark:text-white placeholder-primary"
         />
         <ValidationError prefix="Email" field="email" errors={state.errors} />
 
@@ -76,10 +63,9 @@ export function Form() {
           id="phone"
           type="tel"
           name="phone"
-          onChange={(e) => {
-            verifyPhoneNumber(e.target.value);
-          }}
+          onChange={(e) => verifyPhoneNumber(e.target.value)}
           required
+          className="p-3 border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-900 dark:text-white placeholder-primary"
         />
         <ValidationError prefix="Phone" field="phone" errors={state.errors} />
 
@@ -88,25 +74,20 @@ export function Form() {
           placeholder="Leave your message"
           id="message"
           name="message"
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
+          onChange={(e) => setMessage(e.target.value)}
+          className="p-3 border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-900 dark:text-white placeholder-primary"
         />
-        <ValidationError
-          prefix="Message"
-          field="message"
-          errors={state.errors}
-        />
+        <ValidationError prefix="Message" field="message" errors={state.errors} />
 
         <button
           type="submit"
           disabled={state.submitting || !validEmail || !validPhoneNumber}
+          className="py-2 px-4 bg-primary text-white rounded-md hover:bg-primary/80 disabled:opacity-50"
         >
           Submit
         </button>
       </form>
-
-      <Toaster position="bottom-left" /> {/* Adding the Toaster component */}
-    </Container>
+      <Toaster position="bottom-left" />
+    </div>
   );
 }
