@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
 import {
+  Badge,
   Box,
-  Stack,
-  IconButton,
-  Text,
   Button,
   Flex,
-  Badge,
+  IconButton,
   keyframes,
+  Stack,
+  Text,
 } from "@chakra-ui/react";
-import { FaCircle, FaRegCircle } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaCircle, FaRegCircle } from "react-icons/fa"; // Importing FontAwesome icons
 import first from "../../Media/first.png";
 import second from "../../Media/second.png";
 import third from "../../Media/third.png";
+import Cards from "./Cards";
 
 const slides = [
   {
@@ -53,7 +54,7 @@ const Slideshow = () => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
       setPlayAnimation(false);
       setTimeout(() => setPlayAnimation(true), 10); // Reset the animation
-    }, 5000); // Changes slide every second
+    }, 5000); // Changes slide every 5 seconds
 
     return () => clearInterval(interval); // Cleanup the interval on component unmount
   }, [currentSlide]);
@@ -61,27 +62,35 @@ const Slideshow = () => {
   const changeSlide = (index) => {
     setCurrentSlide(index);
     setPlayAnimation(false);
-    setTimeout(() => setPlayAnimation(true), 10); // Reset the animation
+    setTimeout(() => setPlayAPnimation(true), 10); // Reset the animation
   };
 
   return (
-    <Box position="relative" width="100%" height="100vh" overflow="hidden">
+    <Box
+      position="relative"
+      width="100%"
+      height="160vh"
+      overflow="hidden"
+      // border="1px solid blue"
+    >
       <Box
         background={slides[currentSlide].background}
-        height="100%"
+        height="87%"
         width="100%"
         position="absolute"
         top="0"
         left="0"
         transition="background 0.3s ease-in-out"
+        zIndex="1"
       />
-
       {slides[currentSlide].heading && (
         <Flex
           position="relative"
           zIndex="2"
           color="white"
           p={10}
+          mt={26}
+          // border='1px solid green'
           flexDirection="column"
           maxW="50%"
           ml={10}
@@ -90,6 +99,7 @@ const Slideshow = () => {
           <Flex
             alignItems="center"
             mb={4}
+            mt={4}
             border="1px solid #ffffff90"
             borderRadius="full"
             px={4}
@@ -140,13 +150,14 @@ const Slideshow = () => {
           </Flex>
         </Flex>
       )}
-
+      {/* Slide navigation buttons */}
       <Stack
         position="absolute"
         left="20px"
         top="50%"
         transform="translateY(-50%)"
         spacing={4}
+        zIndex="2"
       >
         {slides.map((_, index) => (
           <IconButton
@@ -159,6 +170,8 @@ const Slideshow = () => {
           />
         ))}
       </Stack>
+      {/* Cards Section */}
+      <Cards />
     </Box>
   );
 };

@@ -4,6 +4,13 @@ import { ChakraProvider } from "@chakra-ui/react";
 import FirstNavbar from "./Components/FirstNavBar/FirstNavbar";
 import Navbar from "./Components/SecondNavbar/SecondNavbar";
 import Slideshow from "./Components/Services/Services";
+import AboutCompany from "./Components/AboutCompany/AboutCompany";
+import Slider from "./Components/Slider/Slider";
+import MainPrinciples from "./Components/MainPrinciples/MainPrinciple";
+import ServicesSection from "./Components/ServicesSection/ServicesSection";
+import HoverGrid from "./Components/HoverGrid/HoverGrid";
+import ProcessSection from "./Components/ProcessSection/ProcessSection";
+import TestimonialsSlider from "./Components/Testmonials/Testimionial";
 
 function App() {
   return (
@@ -12,7 +19,14 @@ function App() {
         <div>
           <FirstNavbar />
           <Navbar />
-          <Slideshow/>
+          <Slideshow />
+          <AboutCompany />
+          <Slider />
+          <MainPrinciples />
+          <ServicesSection />
+          <HoverGrid />
+          <ProcessSection />
+          <TestimonialsSlider />
           <Routes>
             <Route path="/" element={<div>Home</div>} />
             <Route path="/option1" element={<div>Option 1</div>} />
